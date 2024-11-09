@@ -15,13 +15,20 @@ def get_time():
     a = dictDate[nowtime.strftime('%A')]
     return nowtime.strftime("%Y年%m月%d日") + a
 
-
+'''
 def get_words():
     words = requests.get("https://tenapi.cn/v2/yiyan?format=json").json()
     print(words)
     if words['code'] != 200:
         return get_words()
     return words.json()['data']['hitokoto']
+    '''
+def get_words():
+  # OpenRefactory Warning: The 'requests.get' method does not use any 'timeout' threshold which may cause program to hang indefinitely.
+  words = requests.get("https://api.shadiao.pro/chp", timeout=100)
+  if words.status_code != 200:
+    return get_words()
+  return words.json()['data']['text']
 
 def get_weather(city, key):
     url = f"https://api.seniverse.com/v3/weather/daily.json?key={key}&location={city}&language=zh-Hans&unit=c&start=-1&days=5"
